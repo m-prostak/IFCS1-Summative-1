@@ -28,6 +28,7 @@ def generate_equation(max_number):
     equation = ' '.join(map(str, equation_arr))
     return equation, equation_arr
 
+
 def solve_equation(equation_arr):
     """
     Solves the parsed equation represented by a list.
