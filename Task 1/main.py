@@ -8,6 +8,33 @@ max_question_number = 5
 max_number_range = 10
 
 
+def ask_question():
+    """Clear and then create the widgets for the question screen."""
+    global answer, feedback_label, submit_button, entry_box
+    clear_frame()
+    # Get random equation
+    equation, equation_arr = generate_equation(max_number_range)
+    # Get answer to the equation
+    answer = solve_equation(equation_arr)
+    # Create the widgets for the question answering screen
+    tk.Label(
+        frame,
+        text=(
+            f"Question {str(question_number)} "
+            f"- Solver for x (2 decimal places):\n{equation}"
+        )
+    ).pack()
+    feedback_label = tk.Label(frame, width=40)
+    entry_box = tk.Entry(frame, width=27)
+    submit_button = tk.Button(
+        frame, text='Submit', width=25, command=submit_answer
+    )
+    # Add the widgets to the frame
+    feedback_label.pack()
+    entry_box.pack()
+    submit_button.pack()
+
+
 def submit_answer():
     """
     Display whether the user is correct or incorrect and then move to
@@ -63,33 +90,6 @@ def check_answer():
         )
         # Clear entry box
         entry_box.delete(0, tk.END)
-
-
-def ask_question():
-    """Clear and then create the widgets for the question screen."""
-    global answer, feedback_label, submit_button, entry_box
-    clear_frame()
-    # Get random equation
-    equation, equation_arr = generate_equation(max_number_range)
-    # Get answer to the equation
-    answer = solve_equation(equation_arr)
-    # Create the widgets for the question answering screen
-    tk.Label(
-        frame,
-        text=(
-            f"Question {str(question_number)}"
-            f"- Solver for x (2 decimal places):\n{equation}"
-        )
-    ).pack()
-    feedback_label = tk.Label(frame, width=40)
-    entry_box = tk.Entry(frame, width=27)
-    submit_button = tk.Button(
-        frame, text='Submit', width=25, command=submit_answer
-    )
-    # Add the widgets to the frame
-    feedback_label.pack()
-    entry_box.pack()
-    submit_button.pack()
 
 
 def settings():
@@ -167,36 +167,12 @@ def save_settings():
         # Change the 'Save' button's text to 'Saved!' and green
         save_button.config(text="Saved!", fg="green")
         # Change the 'Save' button's format back after 1.5 seconds
-        frame.after(15000, lambda: save_button.config(text="Save", fg="black"))
+        frame.after(1500, lambda: save_button.config(text="Save", fg="black"))
     except ValueError:
         # Change the 'Save' button's text to 'Invalid Input' and red
         save_button.config(text="Invalid Input/s", fg="red")
         # Change the 'Save' button back after 1.5 seconds
-        frame.after(15000, lambda: save_button.config(text="Save", fg="black"))
-
-
-def end_game():
-    """Clear and then create the widgets for the end of game screen."""
-    clear_frame()
-    tk.Label(frame, text=f"End of Game, Score: {user_score}").pack()
-    tk.Button(frame, text="Play Again", width=15, command=start_game).pack()
-    tk.Button(frame, text="Exit", width=15, command=exit_window).pack()
-
-
-def exit_window():
-    """Close the GUI."""
-    window.destroy()
-
-
-def start_game():
-    """
-    Set the variables so when 'Play Again' is selected,
-    the variables are reset before starting the game.
-    """
-    global question_number, user_score
-    question_number = 1
-    user_score = 0
-    main_menu()
+        frame.after(1500, lambda: save_button.config(text="Save", fg="black"))
 
 
 def main_menu():
@@ -207,7 +183,7 @@ def main_menu():
     clear_frame()
     window.geometry("400x135")
     tk.Label(
-        frame, text="Welcome to the Equation Solver, Press Start to Begin"
+        frame, text="Welcome to the Equation Solver Game, Press Start to Begin!"
     ).pack()
     tk.Label(
         frame, text="Note: You may enter your answer as a fraction (a/b)",
@@ -218,6 +194,44 @@ def main_menu():
     tk.Button(frame, text="Exit", width=25, command=exit_window).pack()
 
 
+def reset_game_variables():
+    """Resets the question_number and user_score variables"""
+    global question_number, user_score
+    question_number = 1
+    user_score = 0
+
+
+def start_game():
+    """
+    Set the variables so when 'Play Again' is selected,
+    the variables are reset before starting the game.
+    """
+    reset_game_variables()
+    main_menu()
+
+
+def end_game():
+    """
+    Clear, then create the widgets for the end of game screen, displays
+    the user's score and then reset variables so they are ready for the
+    next game.
+    """
+    clear_frame()
+    score_percentage = (user_score/max_question_number)*100
+    tk.Label(
+        frame, text=f"End of Game\nScore: {user_score} ({score_percentage}%)"
+    ).pack()
+    tk.Button(frame, text="Play Again", width=15, command=ask_question).pack()
+    tk.Button(frame, text="Main Menu", width=15, command=start_game).pack()
+    tk.Button(frame, text="Exit", width=15, command=exit_window).pack()
+    reset_game_variables()
+
+
+def exit_window():
+    """Close the GUI."""
+    window.destroy()
+
+
 def clear_frame():
     """Iterate through all widgets in the frame and remove them."""
     for widget in frame.winfo_children():
@@ -226,7 +240,7 @@ def clear_frame():
 
 # Initialize the window
 window = tk.Tk()
-window.title("Solve Equations")
+window.title("Equation Solver Game")
 window.geometry("400x135")
 
 # Create a frame to hold all widgets
