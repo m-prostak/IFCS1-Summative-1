@@ -217,7 +217,7 @@ def end_game():
     next game.
     """
     clear_frame()
-    score_percentage = (user_score/max_question_number)*100
+    score_percentage = calculate_score_percentage()
     tk.Label(
         frame, text=f"End of Game\nScore: {user_score} ({score_percentage}%)"
     ).pack()
@@ -236,6 +236,10 @@ def clear_frame():
     """Iterate through all widgets in the frame and remove them."""
     for widget in frame.winfo_children():
         widget.destroy()
+
+
+def calculate_score_percentage():
+    return (user_score/max_question_number)*100
 
 
 # Initialize the window
