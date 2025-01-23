@@ -201,15 +201,6 @@ def reset_game_variables():
     user_score = 0
 
 
-def start_game():
-    """
-    Set the variables so when 'Play Again' is selected,
-    the variables are reset before starting the game.
-    """
-    reset_game_variables()
-    main_menu()
-
-
 def end_game():
     """
     Clear, then create the widgets for the end of game screen, displays
@@ -222,7 +213,7 @@ def end_game():
         frame, text=f"End of Game\nScore: {user_score} ({score_percentage}%)"
     ).pack()
     tk.Button(frame, text="Play Again", width=15, command=ask_question).pack()
-    tk.Button(frame, text="Main Menu", width=15, command=start_game).pack()
+    tk.Button(frame, text="Main Menu", width=15, command=main_menu).pack()
     tk.Button(frame, text="Exit", width=15, command=exit_window).pack()
     reset_game_variables()
 
@@ -250,5 +241,5 @@ window.geometry("400x135")
 # Create a frame to hold all widgets
 frame = tk.Frame(window)
 frame.pack(fill="both", expand=True)
-start_game()
+main_menu()
 window.mainloop()
