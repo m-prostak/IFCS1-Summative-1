@@ -55,7 +55,7 @@ def submit_answer():
     # Checks whether the user has provided a valid output
     if checked_answer == True or checked_answer == False:
         # Delay moving to the next page so that answer feedback can be read
-        frame.after(1500, proceed_wih_game)
+        frame.after(1500, proceed_with_game)
 
 
 def check_answer():
@@ -85,7 +85,7 @@ def check_answer():
         entry_box.delete(0, tk.END)
 
 
-def proceed_wih_game():
+def proceed_with_game():
     """
     Determine whether to ask the next question or end the game.
     """
