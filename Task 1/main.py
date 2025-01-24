@@ -40,7 +40,7 @@ def submit_answer():
     Display whether the user is correct or incorrect and then move to
     the next question or end the game.
     """
-    global question_number, user_score
+    global user_score
     checked_answer = check_answer()
     if checked_answer == True:
         feedback_label.config(text="Correct!", foreground='green')
@@ -52,17 +52,10 @@ def submit_answer():
             ),
             foreground='red'
         )
-    # Check whether to continue asking questions or end the game
+    # Checks whether the user has provided a valid output
     if checked_answer == True or checked_answer == False:
-        if question_number < max_question_number:
-            question_number += 1
-            # Delay asking the next question by 1.5 seconds so that
-            # answer feedback can be read
-            frame.after(1500, ask_question)
-        else:
-            # Delay ending the game by 1.5 seconds so that answer
-            # feedback can be read
-            frame.after(1500, end_game)
+        # Delay moving to the next page so that answer feedback can be read
+        frame.after(1500, proceed_wih_game)
 
 
 def check_answer():
@@ -85,11 +78,23 @@ def check_answer():
         frame.after(
             1500,
             lambda: submit_button.config(
-                text="Save", fg="black"
+                text="Submit", fg="black"
             )
         )
         # Clear entry box
         entry_box.delete(0, tk.END)
+
+
+def proceed_wih_game():
+    """
+    Determine whether to ask the next question or end the game.
+    """
+    global question_number
+    if question_number < max_question_number:
+        question_number += 1
+        ask_question()
+    else:
+        end_game()
 
 
 def settings():
