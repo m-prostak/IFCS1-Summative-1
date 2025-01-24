@@ -238,7 +238,7 @@ def calculate_score_percentage():
     return (user_score/max_question_number)*100
 
 
-# Initialize the window
+# Initialise the window
 window = tk.Tk()
 window.title("Equation Solver Game")
 window.geometry("400x135")
